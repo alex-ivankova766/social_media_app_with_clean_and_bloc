@@ -12,7 +12,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Social media application',
       theme: CustomTheme().theme(),
-      home: const Scaffold(body: Center(child: Text('Development has begun'))),
+      home: const HomeScreen(),
     );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Development has begun')));
   }
 }
