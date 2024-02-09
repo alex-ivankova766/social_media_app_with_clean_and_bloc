@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({super.key});
@@ -10,19 +11,37 @@ class CustomNavBar extends StatelessWidget {
       color: Colors.black,
       child: SizedBox(
         height: 75,
-        child: Row(children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           IconButton(
-              onPressed: () {}, iconSize: 30, icon: const Icon(Icons.home)),
+              onPressed: () {
+                context.goNamed('feed');
+              },
+              iconSize: 30,
+              icon: const Icon(Icons.home)),
           IconButton(
-              onPressed: () {}, iconSize: 30, icon: const Icon(Icons.search)),
+              onPressed: () {
+                context.goNamed('discover');
+              },
+              iconSize: 30,
+              icon: const Icon(Icons.search)),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                // context.goNamed('feed');
+              },
               iconSize: 30,
               icon: const Icon(Icons.add_circle)),
           IconButton(
-              onPressed: () {}, iconSize: 30, icon: const Icon(Icons.message)),
+              onPressed: () {
+                // context.goNamed('feed');
+              },
+              iconSize: 30,
+              icon: const Icon(Icons.message)),
           IconButton(
-              onPressed: () {}, iconSize: 30, icon: const Icon(Icons.person)),
+              onPressed: () {
+                // context.goNamed('feed');
+              },
+              iconSize: 30,
+              icon: const Icon(Icons.person)),
         ]),
       ),
     );
