@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../main.dart';
+import '../features/auth/presentation/views/screens.dart';
+import '../features/feed/presentation/view/screens.dart';
 
 class AppRouter {
   //TODO: Add the auth bloc as an input
@@ -16,14 +17,14 @@ class AppRouter {
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
           // TODO: change to feed screen.
-          return const HomeScreen();
+          return const FeedScreen();
         },
         routes: <GoRoute>[
           GoRoute(
               name: 'discover',
-              path: '/discover',
+              path: 'discover',
               builder: (BuildContext context, GoRouterState state) {
-                return Container();
+                return const DiscoverScreen();
               },
               routes: [
                 GoRoute(
@@ -36,16 +37,16 @@ class AppRouter {
               ]),
           GoRoute(
               name: 'login',
-              path: '/login',
+              path: 'login',
               builder: (BuildContext context, GoRouterState state) {
-                return Container();
+                return const LoginScreen();
               },
               routes: [
                 GoRoute(
                   name: 'signup',
                   path: 'signup',
                   builder: (BuildContext context, GoRouterState state) {
-                    return Container();
+                    return const SignUpScreen();
                   },
                 )
               ]),
