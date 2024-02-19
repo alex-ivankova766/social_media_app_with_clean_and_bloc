@@ -14,44 +14,42 @@ class AppRouter {
     routes: <GoRoute>[
       GoRoute(
         name: 'feed',
-        path: '/',
+        path: '/feed',
         builder: (BuildContext context, GoRouterState state) {
           // TODO: change to feed screen.
           return const FeedScreen();
         },
-        routes: <GoRoute>[
-          GoRoute(
-              name: 'discover',
-              path: 'discover',
-              builder: (BuildContext context, GoRouterState state) {
-                return const DiscoverScreen();
-              },
-              routes: [
-                GoRoute(
-                  name: 'user',
-                  path: ':userId',
-                  builder: (BuildContext context, GoRouterState state) {
-                    return Container();
-                  },
-                )
-              ]),
-          GoRoute(
-              name: 'login',
-              path: 'login',
-              builder: (BuildContext context, GoRouterState state) {
-                return const LoginScreen();
-              },
-              routes: [
-                GoRoute(
-                  name: 'signup',
-                  path: 'signup',
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const SignUpScreen();
-                  },
-                )
-              ]),
-        ],
       ),
+      GoRoute(
+          name: 'discover',
+          path: '/discover',
+          builder: (BuildContext context, GoRouterState state) {
+            return const DiscoverScreen();
+          },
+          routes: <GoRoute>[
+            GoRoute(
+              name: 'user',
+              path: ':userId',
+              builder: (BuildContext context, GoRouterState state) {
+                return Container();
+              },
+            )
+          ]),
+      GoRoute(
+          name: 'login',
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LoginScreen();
+          },
+          routes: [
+            GoRoute(
+              name: 'signup',
+              path: 'signup',
+              builder: (BuildContext context, GoRouterState state) {
+                return const SignUpScreen();
+              },
+            )
+          ]),
     ],
     //TODO: redirect users to the login screen if they're not
     //authenticated. Else go to the feed screen
