@@ -44,3 +44,4 @@ app.*.map.json
 /android/app/release
 android/app/src/main/java/io/flutter/app/FlutterMultiDexApplication.java
 .fvm/
+devtools_options.yaml
