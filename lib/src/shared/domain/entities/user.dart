@@ -14,10 +14,19 @@ class User extends Equatable {
   final int following;
   final String? imagePath;
 
-  static const empty = User(id: 'user_0', username: Username.pure());
+  static const empty = User(
+    id: 'user_0',
+    username: Username.pure(),
+  );
 
   @override
-  List<Object?> get props => [id, username, followers, following, imagePath];
+  List<Object?> get props => [
+        id,
+        username,
+        followers,
+        following,
+        imagePath,
+      ];
 }
 
 enum UsernameValidationError { invalid }

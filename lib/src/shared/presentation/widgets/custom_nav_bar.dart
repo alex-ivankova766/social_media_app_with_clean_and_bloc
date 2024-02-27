@@ -11,38 +11,41 @@ class CustomNavBar extends StatelessWidget {
       color: Colors.black,
       child: SizedBox(
         height: 75,
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          IconButton(
-              onPressed: () {
-                context.goNamed('feed');
-              },
-              iconSize: 30,
-              icon: const Icon(Icons.home)),
-          IconButton(
-              onPressed: () {
-                context.goNamed('discover');
-              },
-              iconSize: 30,
-              icon: const Icon(Icons.search)),
-          IconButton(
-              onPressed: () {
-                // context.goNamed('feed');
-              },
-              iconSize: 30,
-              icon: const Icon(Icons.add_circle)),
-          IconButton(
-              onPressed: () {
-                // context.goNamed('feed');
-              },
-              iconSize: 30,
-              icon: const Icon(Icons.message)),
-          IconButton(
-              onPressed: () {
-                // context.goNamed('feed');
-              },
-              iconSize: 30,
-              icon: const Icon(Icons.person)),
-        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+                onPressed: () {
+                  context.goNamed('feed');
+                },
+                iconSize: 30,
+                icon: const Icon(Icons.home)),
+            IconButton(
+                onPressed: () {
+                  context.goNamed('discover');
+                },
+                iconSize: 30,
+                icon: const Icon(Icons.search)),
+            IconButton(
+                onPressed: () {
+                  // context.goNamed('feed');
+                },
+                iconSize: 30,
+                icon: const Icon(Icons.add_circle)),
+            IconButton(
+                onPressed: () {
+                  // context.goNamed('feed');
+                },
+                iconSize: 30,
+                icon: const Icon(Icons.message)),
+            IconButton(
+                onPressed: () {
+                  // context.goNamed('feed');
+                },
+                iconSize: 30,
+                icon: const Icon(Icons.person)),
+          ],
+        ),
       ),
     );
   }

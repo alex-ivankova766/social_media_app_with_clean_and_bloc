@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/domain/entities/logged_in_user.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/domain/entities/entities.dart';
+import '../../../../shared/domain/entities/entities.dart';
+import '../../domain/entities/logged_in_user.dart';
 
 enum AuthStatus {
   unknown,
@@ -63,7 +63,10 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
     return Future.delayed(const Duration(milliseconds: 300), () {
       for (final user in _allUsers) {
         if (user.username.value == username.value) {
-          _updateLoggedInUser(id: user.id, username: user.username);
+          _updateLoggedInUser(
+            id: user.id,
+            username: user.username,
+          );
           _authStatusStreamController.add(AuthStatus.authenticated);
           return;
         }
@@ -91,7 +94,11 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
         _cache.read(key: userCacheKey) ?? LoggedInUser.empty;
     _cache.write(
         key: userCacheKey,
-        value: loggedInUser.copyWith(id: id, username: username, email: email));
+        value: loggedInUser.copyWith(
+          id: id,
+          username: username,
+          email: email,
+        ));
   }
 
   final List<User> _allUsers = <User>[

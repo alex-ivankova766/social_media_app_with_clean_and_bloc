@@ -17,8 +17,14 @@ class LoggedInUser extends User {
       LoggedInUser(id: '-', username: Username.pure(), email: Email.pure());
 
   @override
-  List<Object?> get props =>
-      [id, username, followers, following, imagePath, email];
+  List<Object?> get props => [
+        id,
+        username,
+        followers,
+        following,
+        imagePath,
+        email,
+      ];
 
   LoggedInUser copyWith({
     String? id,
@@ -29,12 +35,13 @@ class LoggedInUser extends User {
     String? imagePath,
   }) =>
       LoggedInUser(
-          id: id ?? this.id,
-          username: username ?? this.username,
-          email: email ?? this.email,
-          followers: followers ?? this.followers,
-          following: following ?? this.following,
-          imagePath: imagePath ?? this.imagePath);
+        id: id ?? this.id,
+        username: username ?? this.username,
+        email: email ?? this.email,
+        followers: followers ?? this.followers,
+        following: following ?? this.following,
+        imagePath: imagePath ?? this.imagePath,
+      );
 }
 
 enum EmailValidationError { invalid }
