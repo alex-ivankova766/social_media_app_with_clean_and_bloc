@@ -7,7 +7,7 @@ class GetLoggedInUser implements UseCase<LoggedInUser, NoParams> {
   final AuthRepository authRepository;
 
   @override
-  call(NoParams params) {
+  Future<LoggedInUser> call(NoParams params) {
     return authRepository.loggedInUser;
   }
 }
