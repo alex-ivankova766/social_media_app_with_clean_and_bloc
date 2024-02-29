@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/widgets/login_snack_bar.dart';
 
 import '../../../../shared/presentation/widgets/widgets.dart';
 
@@ -28,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            _SignUp(),
+            _SignupButton(),
             Spacer(flex: 2),
             _LoginRedirect()
           ],
@@ -43,9 +47,20 @@ class _Username extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomTextField(
-      labelText: 'Username',
-      textInputType: TextInputType.name,
+    return BlocBuilder<SignupCubit, SignupState>(
+      buildWhen: (previous, current) {
+        return previous.username != current.username;
+      },
+      builder: (context, state) {
+        return CustomTextField(
+          labelText: 'Username',
+          errorText: state.username.invalid ? 'The username is invalid' : null,
+          textInputType: TextInputType.name,
+          onChanged: (username) {
+            context.read<SignupCubit>().usernameChanged(username);
+          },
+        );
+      },
     );
   }
 }
@@ -55,9 +70,20 @@ class _Email extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomTextField(
-      labelText: 'E-mail',
-      textInputType: TextInputType.emailAddress,
+    return BlocBuilder<SignupCubit, SignupState>(
+      buildWhen: (previous, current) {
+        return previous.email != current.email;
+      },
+      builder: (context, state) {
+        return CustomTextField(
+          labelText: 'E-mail',
+          textInputType: TextInputType.emailAddress,
+          errorText: state.email.invalid ? 'The email is invalid' : null,
+          onChanged: (email) {
+            context.read<SignupCubit>().emailChanged(email);
+          },
+        );
+      },
     );
   }
 }
@@ -67,34 +93,63 @@ class _Password extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomTextField(
-      labelText: 'Password',
-      obscureText: true,
+    return BlocBuilder<SignupCubit, SignupState>(
+      buildWhen: (previous, current) {
+        return previous.password != current.password;
+      },
+      builder: (context, state) {
+        return CustomTextField(
+          labelText: 'Password',
+          obscureText: true,
+          textInputType: TextInputType.text,
+          errorText: state.password.invalid ? 'The password is invalid' : null,
+          onChanged: (password) {
+            context.read<SignupCubit>().passwordChanged(password);
+          },
+        );
+      },
     );
   }
 }
 
-class _SignUp extends StatelessWidget {
-  const _SignUp();
+class _SignupButton extends StatelessWidget {
+  const _SignupButton();
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Colors.black),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            backgroundColor: Colors.white,
-            minimumSize: const Size(100, 50)),
-        child: Text(
-          'Sign up',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Colors.black),
-        ));
+    return BlocBuilder<SignupCubit, SignupState>(
+      buildWhen: (previous, current) {
+        return previous.status != current.status;
+      },
+      builder: (context, state) {
+        return state.status == FormzStatus.submissionInProgress
+            ? const CircularProgressIndicator(color: Colors.white)
+            : ElevatedButton(
+                onPressed: () {
+                  if (state.status == FormzStatus.valid) {
+                    context.read<SignupCubit>().signupWithCredentials();
+                    context.pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(authSnackBar(
+                        'Check your username, email and password: ${state.status}'));
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    backgroundColor: Colors.white,
+                    minimumSize: const Size(100, 50)),
+                child: Text(
+                  'Sign up',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.black),
+                ));
+      },
+    );
   }
 }
 

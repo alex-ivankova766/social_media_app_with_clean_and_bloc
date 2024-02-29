@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-SnackBar loginSnackBar(String text) {
+SnackBar authSnackBar(String text) {
   return SnackBar(
     animation: CurvedAnimation(
         parent: kAlwaysCompleteAnimation, curve: Curves.easeInOut),
