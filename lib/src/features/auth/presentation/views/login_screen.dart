@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state.status.isSubmissionFailure) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(loginSnackBar(state.errorText ?? 'Auth failure'));
+                .showSnackBar(authSnackBar(state.errorText ?? 'Auth failure'));
           }
         },
         child: const SafeArea(
@@ -130,7 +130,7 @@ class _LoginButton extends StatelessWidget {
                 onPressed: () {
                   state.status == FormzStatus.valid
                       ? context.read<LoginCubit>().logInWithCredentials()
-                      : ScaffoldMessenger.of(context).showSnackBar(loginSnackBar(
+                      : ScaffoldMessenger.of(context).showSnackBar(authSnackBar(
                           'Check your username and password: ${state.status}'));
                 },
                 style: ElevatedButton.styleFrom(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/domain/usecases/signup_user.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
 
 import 'src/config/config.dart';
 import 'src/features/auth/data/datasources/mock_auth_datasource.dart';
@@ -39,6 +41,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (ctx) => LoginCubit(
                 loginUser: LoginUser(ctx.read<AuthRepositoryImpl>())),
+          ),
+          BlocProvider(
+            create: (ctx) => SignupCubit(
+                signupUser: SignupUser(ctx.read<AuthRepositoryImpl>())),
           ),
         ],
         child: Builder(
