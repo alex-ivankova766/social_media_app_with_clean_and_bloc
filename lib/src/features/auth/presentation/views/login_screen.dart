@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/widgets/login_snack_bar.dart';
 
 import '../../../../shared/presentation/widgets/widgets.dart';
-import '../blocs/login/login_cubit.dart';
+import '../cubits/login/login_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
