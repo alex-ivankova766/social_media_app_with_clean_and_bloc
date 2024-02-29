@@ -47,9 +47,10 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
       _allUsers.add(loggedInUser);
 
       _updateLoggedInUser(
-          id: loggedInUser.id,
-          username: loggedInUser.username,
-          email: loggedInUser.email);
+        id: loggedInUser.id,
+        username: loggedInUser.username,
+        email: loggedInUser.email,
+      );
 
       _authStatusStreamController.add(AuthStatus.unauthenticated);
     });
@@ -71,6 +72,9 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
           return;
         }
       }
+      throw LoginWithUsernameAndPasswordFailure.fromCode(
+        'user-not-found',
+      );
     });
   }
 
@@ -103,17 +107,20 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
 
   final List<User> _allUsers = <User>[
     const User(
-        id: 'user_1',
-        username: Username.dirty('Massimo'),
-        imagePath: 'assets/images/image_1.jpg'),
+      id: 'user_1',
+      username: Username.dirty('Massimo'),
+      imagePath: 'assets/images/image_1.jpg',
+    ),
     const User(
-        id: 'user_2',
-        username: Username.dirty('Sarah'),
-        imagePath: 'assets/images/image_2.jpg'),
+      id: 'user_2',
+      username: Username.dirty('Sarah'),
+      imagePath: 'assets/images/image_2.jpg',
+    ),
     const User(
-        id: 'user_3',
-        username: Username.dirty('John'),
-        imagePath: 'assets/images/image_3.jpg'),
+      id: 'user_3',
+      username: Username.dirty('John'),
+      imagePath: 'assets/images/image_3.jpg',
+    ),
   ];
 }
 
@@ -132,5 +139,25 @@ class CacheClient {
     final value = _cache[key];
     if (value is T) return value;
     return null;
+  }
+}
+
+class LoginWithUsernameAndPasswordFailure implements Exception {
+  const LoginWithUsernameAndPasswordFailure(this.message);
+
+  final String message;
+
+  factory LoginWithUsernameAndPasswordFailure.fromCode(String code) {
+    switch (code) {
+      case 'invalid-username':
+        return const LoginWithUsernameAndPasswordFailure(
+            'Username is not valid.');
+      case 'user-not-found':
+        return const LoginWithUsernameAndPasswordFailure(
+            'Username is not found, please create an account.');
+      default:
+        return const LoginWithUsernameAndPasswordFailure(
+            'An unknown exception occured.');
+    }
   }
 }

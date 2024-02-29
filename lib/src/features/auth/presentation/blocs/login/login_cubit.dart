@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/data/datasources/mock_auth_datasource.dart';
 
 import '../../../../../shared/domain/entities/entities.dart';
 import '../../../domain/entities/logged_in_user.dart';
@@ -57,6 +58,9 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       ));
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on LoginWithUsernameAndPasswordFailure catch (error) {
+      emit(state.copyWith(
+          errorText: error.message, status: FormzStatus.submissionFailure));
     } catch (error) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
