@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/widgets/login_snack_bar.dart';
 
 import '../../../../shared/presentation/widgets/widgets.dart';
 import '../blocs/login/login_cubit.dart';
@@ -14,7 +15,12 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
       body: BlocListener<LoginCubit, LoginState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.status.isSubmissionFailure) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(loginSnackBar(state.errorText ?? 'Auth failure'));
+          }
+        },
         child: const SafeArea(
             child: Padding(
           padding: EdgeInsets.all(20.0),
@@ -124,31 +130,8 @@ class _LoginButton extends StatelessWidget {
                 onPressed: () {
                   state.status == FormzStatus.valid
                       ? context.read<LoginCubit>().logInWithCredentials()
-                      : ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            animation: CurvedAnimation(
-                                parent: kAlwaysCompleteAnimation,
-                                curve: Curves.easeInOut),
-                            padding: const EdgeInsets.all(0),
-                            content: Container(
-                              decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [
-                                    Color.fromARGB(255, 80, 79, 79),
-                                    Color.fromARGB(255, 41, 40, 40)
-                                  ],
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter)),
-                              height: 70.0,
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Text(
-                                    'Check your username and password: ${state.status}'),
-                              ),
-                            ),
-                          ),
-                        );
+                      : ScaffoldMessenger.of(context).showSnackBar(loginSnackBar(
+                          'Check your username and password: ${state.status}'));
                 },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
