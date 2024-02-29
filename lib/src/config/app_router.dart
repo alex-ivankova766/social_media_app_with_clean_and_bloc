@@ -2,19 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/data/datasources/mock_auth_datasource.dart';
 
+import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
 import '../features/auth/presentation/views/screens.dart';
 import '../features/feed/presentation/view/screens.dart';
 
 class AppRouter {
-  //TODO: Add the auth bloc as an input
-  AppRouter();
+  AppRouter(this.authBloc);
+
+  final AuthBloc authBloc;
 
   late final GoRouter router = GoRouter(
     routes: <GoRoute>[
       GoRoute(
         name: 'feed',
-        path: '/feed',
+        path: '/',
         builder: (BuildContext context, GoRouterState state) {
           // TODO: change to feed screen.
           return const FeedScreen();
@@ -37,7 +40,7 @@ class AppRouter {
           ]),
       GoRoute(
           name: 'login',
-          path: '/',
+          path: '/login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginScreen();
           },
@@ -51,9 +54,26 @@ class AppRouter {
             )
           ]),
     ],
-    //TODO: redirect users to the login screen if they're not
-    //authenticated. Else go to the feed screen
-    //redirect:
+    redirect: (BuildContext context, GoRouterState state) {
+      final loginLocation = state.namedLocation('login');
+      final signupLocation = state.namedLocation('signup');
+
+      final bool isLoggedIn = authBloc.state.status == AuthStatus.authenticated;
+      final isLoggingIn = state.fullPath == loginLocation;
+      final isSigninUp = state.fullPath == signupLocation;
+
+      if (!isLoggedIn && !isLoggingIn && !isSigninUp) {
+        return '/login';
+      }
+      if (isLoggedIn && isLoggingIn) {
+        return '/';
+      }
+      if (isLoggedIn && isSigninUp) {
+        return '/';
+      }
+      return null;
+    },
+    refreshListenable: GoRouterRefreshStream(authBloc.stream),
   );
 }
 

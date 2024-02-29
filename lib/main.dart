@@ -41,10 +41,14 @@ class MyApp extends StatelessWidget {
                 loginUser: LoginUser(ctx.read<AuthRepositoryImpl>())),
           ),
         ],
-        child: MaterialApp.router(
-          title: 'Social media application',
-          theme: CustomTheme().theme(),
-          routerConfig: AppRouter().router,
+        child: Builder(
+          builder: (context) {
+            return MaterialApp.router(
+              title: 'Social media application',
+              theme: CustomTheme().theme(),
+              routerConfig: AppRouter(context.read<AuthBloc>()).router,
+            );
+          },
         ),
       ),
     );
