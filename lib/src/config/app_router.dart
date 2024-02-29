@@ -59,8 +59,8 @@ class AppRouter {
       final signupLocation = state.namedLocation('signup');
 
       final bool isLoggedIn = authBloc.state.status == AuthStatus.authenticated;
-      final isLoggingIn = state.fullPath == loginLocation;
-      final isSigninUp = state.fullPath == signupLocation;
+      final isLoggingIn = state.name == loginLocation;
+      final isSigninUp = state.name == signupLocation;
 
       if (!isLoggedIn && !isLoggingIn && !isSigninUp) {
         return '/login';
