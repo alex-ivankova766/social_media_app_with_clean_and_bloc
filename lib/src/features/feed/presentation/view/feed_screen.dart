@@ -10,7 +10,6 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Feed')),
       bottomNavigationBar: const CustomNavBar(),
       body: BlocBuilder<FeedBloc, FeedState>(
         builder: (context, state) {
@@ -19,10 +18,18 @@ class FeedScreen extends StatelessWidget {
                 child: CircularProgressIndicator(color: Colors.white));
           }
           if (state is FeedLoaded) {
-            debugPrint(state.posts.toString());
-            return Container();
+            return PageView(
+              scrollDirection: Axis.vertical,
+              children: state.posts
+                  .map((post) => CustomVideoPlayer(
+                        assetPath: post.assetPath,
+                        username: post.user.username.value,
+                        caption: post.caption,
+                      ))
+                  .toList(),
+            );
           } else {
-            return Text('Something went wrong');
+            return const Center(child: Text('Something went wrong'));
           }
         },
       ),
