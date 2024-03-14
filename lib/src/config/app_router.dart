@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/data/repositories/post_repository_impl.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/domain/usecases/get_posts.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/presentation/bloc/feed/feed_bloc.dart';
 
 import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
 import '../features/auth/presentation/views/screens.dart';
+import '../features/feed/data/repositories/post_repository_impl.dart';
+import '../features/feed/data/repositories/user_repository_impl.dart';
+import '../features/feed/domain/usecases/get_posts.dart';
+import '../features/feed/domain/usecases/get_users.dart';
+import '../features/feed/presentation/bloc/discover/discover_bloc.dart';
+import '../features/feed/presentation/bloc/feed/feed_bloc.dart';
 import '../features/feed/presentation/view/screens.dart';
 
 class AppRouter {
@@ -35,7 +38,13 @@ class AppRouter {
           name: 'discover',
           path: '/discover',
           builder: (BuildContext context, GoRouterState state) {
-            return const DiscoverScreen();
+            return BlocProvider(
+                create: (context) => DiscoverBloc(
+                      getUsers: GetUsers(
+                        context.read<UserRepositoryImpl>(),
+                      ),
+                    )..add(DiscoverGetUsers()),
+                child: const DiscoverScreen());
           },
           routes: <GoRoute>[
             GoRoute(
