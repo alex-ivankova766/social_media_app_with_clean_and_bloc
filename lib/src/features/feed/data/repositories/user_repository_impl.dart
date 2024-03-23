@@ -1,5 +1,4 @@
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/domain/entities/user.dart';
-
+import '../../../../shared/domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/mock_feed_datasource.dart';
 

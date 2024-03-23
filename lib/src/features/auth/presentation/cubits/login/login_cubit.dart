@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/data/datasources/mock_auth_datasource.dart';
 
 import '../../../../../shared/domain/entities/entities.dart';
+import '../../../data/datasources/mock_auth_datasource.dart';
 import '../../../domain/entities/logged_in_user.dart';
 import '../../../domain/usecases/usecases.dart';
 

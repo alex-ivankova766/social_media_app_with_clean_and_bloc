@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/data/models/post_model.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/data/models/user_model.dart';
 
 import 'src/config/config.dart';
 import 'src/features/auth/data/datasources/mock_auth_datasource.dart';
@@ -18,6 +16,8 @@ import 'src/features/auth/presentation/cubits/signup/signup_cubit.dart';
 import 'src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'src/features/feed/data/repositories/post_repository_impl.dart';
 import 'src/features/feed/data/repositories/user_repository_impl.dart';
+import 'src/shared/data/models/post_model.dart';
+import 'src/shared/data/models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

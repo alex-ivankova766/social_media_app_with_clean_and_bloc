@@ -1,7 +1,6 @@
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/data/datasources/mock_auth_datasource.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/domain/entities/logged_in_user.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/domain/entities/user.dart';
-
+import '../datasources/mock_auth_datasource.dart';
+import '../../domain/entities/logged_in_user.dart';
+import '../../../../shared/domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
