@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/data/models/post_model.dart';
 
+import '../../../../shared/data/models/post_model.dart';
 import '../../../../shared/domain/entities/entities.dart';
 
 abstract class LocalFeedDatasource {
@@ -26,9 +26,9 @@ class LocalFeedDatasourceImpl extends LocalFeedDatasource {
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    // TODO: implement getPosts
-    throw UnimplementedError();
+  Future<List<Post>> getPosts() async {
+    Box<PostModel> box = await _openBox() as Box<PostModel>;
+    return box.values.toList().map((post) => post.toEntity()).toList();
   }
 
   Future<Box> _openBox() {

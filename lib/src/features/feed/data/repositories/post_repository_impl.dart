@@ -1,7 +1,6 @@
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/data/datasources/mock_feed_datasource.dart';
-
 import '../../../../shared/domain/entities/post.dart';
 import '../../domain/repositories/post_repository.dart';
+import '../datasources/mock_feed_datasource.dart';
 
 class PostRepositoryImpl implements PostRepository {
   PostRepositoryImpl(this.feedDatasource);
