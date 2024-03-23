@@ -1,7 +1,10 @@
-// class UserModel extends User {}
+import 'package:hive/hive.dart';
 
 import '../../domain/entities/entities.dart';
 
+part 'user_model.g.dart';
+
+@HiveType(typeId: 0)
 class UserModel {
   const UserModel(
       {required this.id,
@@ -9,10 +12,16 @@ class UserModel {
       this.followers = 0,
       this.following = 0,
       this.imagePath});
+
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String username;
+  @HiveField(2)
   final int followers;
+  @HiveField(3)
   final int following;
+  @HiveField(4)
   final String? imagePath;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
