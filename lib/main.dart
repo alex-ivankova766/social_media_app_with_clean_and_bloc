@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/data/datasources/local_feed_datasource.dart';
 
 import 'src/config/config.dart';
 import 'src/features/auth/data/datasources/mock_auth_datasource.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (ctx) => PostRepositoryImpl(
             MockFeedDatasourceImpl(),
+            LocalFeedDatasourceImpl(),
           ),
         ),
       ],
