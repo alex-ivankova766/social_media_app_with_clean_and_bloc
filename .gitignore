@@ -42,7 +42,8 @@ app.*.map.json
 
 # Android Studio will place build artifacts here
 android/app/src/main/java/io/flutter/app/FlutterMultiDexApplication.java
-/ios/
+# /ios/Runner/
+# !/ios/Runner/Info.plist
 .vscode/settings.json
 .fvmrc
 .metadata
