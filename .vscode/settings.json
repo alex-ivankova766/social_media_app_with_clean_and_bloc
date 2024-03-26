@@ -1,3 +1,7 @@
 {
-  "dart.flutterSdkPath": "/Users/user/fmv/default"
+  "dart.flutterSdkPath": "/Users/user/fmv/default",
+  "editor.wordWrap": "on",
+  "code-runner.executorMap": {
+    "custom-command": "fvm flutter run"
+}
 }

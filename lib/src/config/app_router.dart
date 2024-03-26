@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../features/content/presentation/view/add_content_screen.dart';
 
 import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
 import '../features/auth/presentation/views/screens.dart';
@@ -55,6 +56,13 @@ class AppRouter {
               },
             )
           ]),
+      GoRoute(
+        name: 'add_content',
+        path: '/add-content',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AddContentScreen();
+        },
+      ),
       GoRoute(
           name: 'login',
           path: '/login',
