@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../features/content/presentation/cubit/add_content_cubit.dart';
 import '../features/content/presentation/view/add_content_screen.dart';
 
 import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
@@ -60,7 +61,10 @@ class AppRouter {
         name: 'add_content',
         path: '/add-content',
         builder: (BuildContext context, GoRouterState state) {
-          return const AddContentScreen();
+          return BlocProvider(
+            create: (context) => AddContentCubit(),
+            child: const AddContentScreen(),
+          );
         },
       ),
       GoRoute(
