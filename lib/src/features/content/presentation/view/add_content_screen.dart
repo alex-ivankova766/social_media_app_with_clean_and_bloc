@@ -54,14 +54,106 @@ class AddContentScreen extends StatelessWidget {
               ),
             );
           } else if (state.video != null) {
-            return CustomVideoPlayer(
-              assetPath: state.video!.path,
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                CustomVideoPlayer(
+                  assetPath: state.video!.path,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          _addCaption(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            minimumSize: const Size.fromHeight(56.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: Text(
+                          'Share',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
             );
           } else {
             return const Text('Something went wrong.');
           }
         },
       ),
+    );
+  }
+
+  Future<dynamic> _addCaption(BuildContext context) async {
+    return showModalBottomSheet(
+      context: context,
+      builder: (newContext) {
+        return Container(
+          color: Colors.white.withAlpha(175),
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Add your caption',
+                style: Theme.of(newContext)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+
+              Row(
+                children: [
+                  Expanded(child: 
+                  TextFormField(
+                    minLines: 3,
+                    maxLines: 3,
+                    onChanged: (value) {
+                      context.read<AddContentCubit>().captionChanged(value);
+                    },
+                    keyboardType: TextInputType.multiline,
+                    style: Theme.of(newContext).textTheme.bodyMedium!.copyWith(color: Colors.black),
+                    decoration: InputDecoration(fillColor: Colors.white, filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0),
+                    )
+                    ),
+                  ),)
+                ],
+              ),
+              const SizedBox(height: 10,),
+              ElevatedButton(
+                        onPressed: () {
+                          context.read<AddContentCubit>().submit();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            minimumSize: const Size.fromHeight(56.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0))),
+                        child: Text(
+                          'Share',
+                          style: Theme.of(newContext).textTheme.bodyMedium,
+                        ),
+                      )
+            ],
+          ),
+        );
+      },
     );
   }
 
