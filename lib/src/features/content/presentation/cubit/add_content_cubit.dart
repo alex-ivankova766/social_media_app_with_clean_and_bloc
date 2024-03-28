@@ -22,7 +22,7 @@ class AddContentCubit extends Cubit<AddContentState> {
 
   }
 
-  void reser() {
+  void reset() {
     emit(AddContentState.initial());
   }
 
