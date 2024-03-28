@@ -34,4 +34,9 @@ class PostRepositoryImpl implements PostRepository {
   Future<List<Post>> getPostsByUser(String userId) async {
     return feedDatasource.getPostsByUser(userId);
   }
+  
+  @override
+  Future<void> createPost(Post post) {
+    return localFeedDatasource.addPost(post);
+  }
 }
