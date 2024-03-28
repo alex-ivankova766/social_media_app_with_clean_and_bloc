@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/content/domain/usecases/create_post.dart';
 import '../features/content/presentation/cubit/add_content_cubit.dart';
 import '../features/content/presentation/view/add_content_screen.dart';
 
@@ -62,7 +63,7 @@ class AppRouter {
         path: '/add-content',
         builder: (BuildContext context, GoRouterState state) {
           return BlocProvider(
-            create: (context) => AddContentCubit(),
+            create: (context) => AddContentCubit(createPost: CreatePost(context.read<PostRepositoryImpl>())),
             child: const AddContentScreen(),
           );
         },
