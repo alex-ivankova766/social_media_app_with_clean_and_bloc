@@ -22,6 +22,7 @@ class CustomVideoPlayer extends StatefulWidget {
 
 class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   late VideoPlayerController _videoPlayerController;
+  bool isPlayingNow = false;
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     }
     _videoPlayerController.initialize().then((_) => setState(() {}));
     _videoPlayerController.setLooping(true);
-    _videoPlayerController.play();
+    // _videoPlayerController.play();
     super.initState();
   }
 
@@ -43,36 +44,57 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     super.dispose();
   }
 
+  _play() {
+    if (_videoPlayerController.value.isPlaying) {
+      setState(() {
+        _videoPlayerController.pause();
+        isPlayingNow = false;
+      });
+    } else {
+      setState(() {
+        _videoPlayerController.play();
+        isPlayingNow = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_videoPlayerController.value.isInitialized) {
       return const SizedBox();
     } else {
-      return GestureDetector(
-        onTap: () {
-          if (_videoPlayerController.value.isPlaying) {
-            setState(() {
-              _videoPlayerController.pause();
-            });
-          } else {
-            _videoPlayerController.play();
-          }
-        },
-        child: AspectRatio(
-          aspectRatio: _videoPlayerController.value.aspectRatio,
-          child: Stack(
-            children: [
-              VideoPlayer(_videoPlayerController),
-              const CustomGradientOverlay(),
-              widget.caption == null && widget.username == null
-                  ? const SizedBox()
-                  : _VideoCaption(
-                      username: widget.username!,
-                      caption: widget.caption!,
-                    )
-            ],
+      return Stack(
+        children: [
+          GestureDetector(
+            onTap: () => _play(),
+            child: AspectRatio(
+              aspectRatio: _videoPlayerController.value.aspectRatio,
+              child: Stack(
+                children: [
+                  VideoPlayer(_videoPlayerController),
+                  const CustomGradientOverlay(),
+                  widget.caption == null && widget.username == null
+                      ? const SizedBox()
+                      : _VideoCaption(
+                          username: widget.username!,
+                          caption: widget.caption!,
+                        )
+                ],
+              ),
+            ),
           ),
-        ),
+          (!isPlayingNow)
+              ? Center(
+                  child: SizedBox(
+                    child: IconButton(
+                      iconSize: 100,
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      onPressed: () => _play(),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+        ],
       );
     }
   }
