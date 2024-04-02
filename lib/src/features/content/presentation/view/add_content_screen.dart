@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/content/presentation/cubit/add_content_cubit.dart';
 import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/presentation/widgets/widgets.dart';
 
@@ -20,6 +22,11 @@ class AddContentScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         backgroundColor: Colors.black,
+        leading: BackButton(
+          onPressed: () {
+            context.goNamed('feed');
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -33,7 +40,9 @@ class AddContentScreen extends StatelessWidget {
       body: BlocConsumer<AddContentCubit, AddContentState>(
         buildWhen: ((previous, current) => previous.video != current.video),
         listener: (context, state) {
-          // TODO: implement listener
+          if (state.status == AddContentStatus.success) {
+            context.goNamed('feed');
+          }
         },
         builder: (context, state) {
           if (state.video == null) {
@@ -110,46 +119,54 @@ class AddContentScreen extends StatelessWidget {
                     .titleMedium!
                     .copyWith(fontWeight: FontWeight.bold),
               ),
-
               Row(
                 children: [
-                  Expanded(child: 
-                  TextFormField(
-                    minLines: 3,
-                    maxLines: 3,
-                    onChanged: (value) {
-                      context.read<AddContentCubit>().captionChanged(value);
-                    },
-                    keyboardType: TextInputType.multiline,
-                    style: Theme.of(newContext).textTheme.bodyMedium!.copyWith(color: Colors.black),
-                    decoration: InputDecoration(fillColor: Colors.white, filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10.0),
+                  Expanded(
+                    child: TextFormField(
+                      minLines: 3,
+                      maxLines: 3,
+                      onChanged: (value) {
+                        context.read<AddContentCubit>().captionChanged(value);
+                      },
+                      keyboardType: TextInputType.multiline,
+                      style: Theme.of(newContext)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.black),
+                      decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10.0),
-                    )
-                    ),
-                  ),)
+                  )
                 ],
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               ElevatedButton(
-                        onPressed: () {
-                          context.read<AddContentCubit>().submit();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            minimumSize: const Size.fromHeight(56.0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0))),
-                        child: Text(
-                          'Share',
-                          style: Theme.of(newContext).textTheme.bodyMedium,
-                        ),
-                      )
+                onPressed: () {
+                  context
+                      .read<AddContentCubit>()
+                      .submit(context.read<AuthBloc>().state.user);
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    minimumSize: const Size.fromHeight(56.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0))),
+                child: Text(
+                  'Share',
+                  style: Theme.of(newContext).textTheme.bodyMedium,
+                ),
+              )
             ],
           ),
         );

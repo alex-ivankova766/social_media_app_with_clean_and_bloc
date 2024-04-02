@@ -1,8 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:uuid/uuid.dart';
+
 import '../../../../shared/domain/entities/post.dart';
 import '../../../../shared/domain/entities/user.dart';
 import '../../domain/usecases/create_post.dart';
@@ -33,11 +35,11 @@ class AddContentCubit extends Cubit<AddContentState> {
     ));
   }
 
-  void submit() {
+  void submit(User user) {
     try {
       final post = Post(
-        id: 'post_000',
-        user: User.empty,
+        id: const Uuid().v4(),
+        user: user,
         caption: state.caption,
         assetPath: state.video!.path,
       );
