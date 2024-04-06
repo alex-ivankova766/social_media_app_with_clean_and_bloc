@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/presentation/widgets/another_video_player.dart';
 
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
@@ -16,6 +17,11 @@ class ManageContentScreen extends StatelessWidget {
         imagePath: 'assets/images/image_1.jpg');
     return Scaffold(
         appBar: AppBar(
+          leading: BackButton(
+          onPressed: () {
+            context.goNamed('feed');
+          },
+        ),
           centerTitle: true,
           title: Text(
             user.username.value,
@@ -41,7 +47,7 @@ class ManageContentScreen extends StatelessWidget {
                         caption: 'Test',
                         assetPath: 'assets/videos/video_1.mp4',
                       );
-                      return CustomVideoPlayer(
+                      return AnotherVideoPlayer(
                         assetPath: post.assetPath,
                       );
                     }),

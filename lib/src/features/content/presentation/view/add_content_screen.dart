@@ -6,9 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/content/presentation/cubit/add_content_cubit.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/presentation/widgets/widgets.dart';
+
+import '../../../../shared/presentation/widgets/another_video_player.dart';
+import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
+import '../cubit/add_content_cubit.dart';
 
 class AddContentScreen extends StatelessWidget {
   const AddContentScreen({super.key});
@@ -66,7 +67,7 @@ class AddContentScreen extends StatelessWidget {
             return Stack(
               fit: StackFit.expand,
               children: [
-                CustomVideoPlayer(
+                AnotherVideoPlayer(
                   assetPath: state.video!.path,
                 ),
                 Padding(
