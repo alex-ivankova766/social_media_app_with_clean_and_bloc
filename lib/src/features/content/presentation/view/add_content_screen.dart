@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../shared/presentation/widgets/another_video_player.dart';
+import '../../../../shared/presentation/widgets/custom_video_player.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../cubit/add_content_cubit.dart';
 
@@ -67,9 +67,7 @@ class AddContentScreen extends StatelessWidget {
             return Stack(
               fit: StackFit.expand,
               children: [
-                AnotherVideoPlayer(
-                  assetPath: state.video!.path,
-                ),
+                VideoPost(assetPath: state.video!.path, isPlaying: true),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
