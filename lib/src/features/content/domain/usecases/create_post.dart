@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/domain/repositories/post_repository.dart';
+import '../../../feed/domain/repositories/post_repository.dart';
 
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/domain/usecases/usecases.dart';

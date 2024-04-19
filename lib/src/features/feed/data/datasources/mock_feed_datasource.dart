@@ -1,4 +1,4 @@
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/data/models/user_model.dart';
+import '../../../../shared/data/models/user_model.dart';
 
 import '../../../../shared/data/datasources/post_data.dart';
 import '../../../../shared/data/datasources/user_data.dart';

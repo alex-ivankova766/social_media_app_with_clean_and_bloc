@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/content/domain/usecases/create_post.dart';
 
 import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
 import '../features/auth/presentation/views/screens.dart';
+import '../features/content/domain/usecases/create_post.dart';
 import '../features/content/presentation/cubit/add_content_cubit.dart';
 import '../features/content/presentation/view/screens.dart';
 import '../features/feed/data/repositories/post_repository_impl.dart';

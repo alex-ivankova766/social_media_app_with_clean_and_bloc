@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/feed/presentation/bloc/discover/discover_bloc.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/presentation/widgets/custom_gradient_overlay.dart';
+import '../bloc/discover/discover_bloc.dart';
+
 
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
