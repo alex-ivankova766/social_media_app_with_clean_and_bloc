@@ -24,7 +24,6 @@ class _ManageContentScreenState extends State<ManageContentScreen> {
   }
 
   _turnPlayOrPause(int nextIndex) {
-    logger.i('clicked $nextIndex');
     setState(() {
       playingIndex = nextIndex;
       whoIsPlayingNow = List<bool>.generate(videoCount, (int index) => false);
