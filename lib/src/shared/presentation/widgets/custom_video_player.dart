@@ -1,13 +1,90 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
-import 'custom_gradient_overlay.dart';
+import 'widgets.dart';
 
-class CustomVideoPlayer extends StatefulWidget {
-  const CustomVideoPlayer({
-    super.key,
+class VideoPost extends StatefulWidget {
+  const VideoPost(
+      {super.key,
+      required this.assetPath,
+      this.caption,
+      this.username,
+      required this.isPlaying});
+  final String assetPath;
+  final String? caption;
+  final String? username;
+  final bool isPlaying;
+
+  @override
+  State<VideoPost> createState() => _VideoPostState();
+}
+
+class _VideoPostState extends State<VideoPost> {
+  String? _thumbnailPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _generateThumbnail();
+  }
+
+  Future<void> _generateThumbnail() async {
+    final receivePort = ReceivePort();
+    final isolate = await FlutterIsolate.spawn(
+        _generateThumbnailInIsolate, [receivePort.sendPort, widget.assetPath]);
+    receivePort.listen((data) {
+      if (data is String) {
+        setState(() {
+          _thumbnailPath = data;
+        });
+        isolate.kill();
+      }
+    });
+  }
+
+  static _generateThumbnailInIsolate(List args) async {
+    final SendPort sendPort = args[0];
+    final path = args[1];
+    final byteData = await rootBundle.load(path);
+    Directory tempDir = await getTemporaryDirectory();
+
+    File tempVideo = File("${tempDir.path}/$path")
+      ..createSync(recursive: true)
+      ..writeAsBytesSync(byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    final fileName = await VideoThumbnail.thumbnailFile(
+      video: tempVideo.path,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.PNG,
+      quality: 100,
+    );
+    sendPort.send(fileName);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.isPlaying
+        ? _CustomVideoPlayer(
+            assetPath: widget.assetPath,
+            caption: widget.caption,
+            username: widget.username)
+        : _VideoPreview(
+            previewPath: _thumbnailPath,
+            caption: widget.caption,
+            username: widget.username);
+  }
+}
+
+class _CustomVideoPlayer extends StatefulWidget {
+  const _CustomVideoPlayer({
     required this.assetPath,
     this.caption,
     this.username,
@@ -17,12 +94,11 @@ class CustomVideoPlayer extends StatefulWidget {
   final String? username;
 
   @override
-  State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
+  State<_CustomVideoPlayer> createState() => _CustomVideoPlayerState();
 }
 
-class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
+class _CustomVideoPlayerState extends State<_CustomVideoPlayer> {
   late VideoPlayerController _videoPlayerController;
-  bool isPlayingNow = false;
 
   @override
   void initState() {
@@ -34,7 +110,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     }
     _videoPlayerController.initialize().then((_) => setState(() {}));
     _videoPlayerController.setLooping(true);
-    // _videoPlayerController.play();
+    _videoPlayerController.play();
     super.initState();
   }
 
@@ -44,59 +120,65 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     super.dispose();
   }
 
-  _play() {
-    if (_videoPlayerController.value.isPlaying) {
-      setState(() {
-        _videoPlayerController.pause();
-        isPlayingNow = false;
-      });
-    } else {
-      setState(() {
-        _videoPlayerController.play();
-        isPlayingNow = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (!_videoPlayerController.value.isInitialized) {
       return const SizedBox();
     } else {
-      return Stack(
-        children: [
-          GestureDetector(
-            onTap: () => _play(),
-            child: AspectRatio(
-              aspectRatio: _videoPlayerController.value.aspectRatio,
-              child: Stack(
-                children: [
-                  VideoPlayer(_videoPlayerController),
-                  const CustomGradientOverlay(),
-                  widget.caption == null && widget.username == null
-                      ? const SizedBox()
-                      : _VideoCaption(
-                          username: widget.username!,
-                          caption: widget.caption!,
-                        )
-                ],
-              ),
-            ),
-          ),
-          (!isPlayingNow)
-              ? Center(
-                  child: SizedBox(
-                    child: IconButton(
-                      iconSize: 100,
-                      icon: const Icon(Icons.play_arrow_rounded),
-                      onPressed: () => _play(),
+      return GestureDetector(
+        onTap: () {
+          if (_videoPlayerController.value.isPlaying) {
+            setState(() {
+              _videoPlayerController.pause();
+            });
+          } else {
+            _videoPlayerController.play();
+          }
+        },
+        child: AspectRatio(
+          aspectRatio: _videoPlayerController.value.aspectRatio,
+          child: Stack(
+            children: [
+              VideoPlayer(_videoPlayerController),
+              const CustomGradientOverlay(),
+              widget.caption == null && widget.username == null
+                  ? const SizedBox()
+                  : _VideoCaption(
+                      username: widget.username!,
+                      caption: widget.caption!,
                     ),
-                  ),
-                )
-              : const SizedBox(),
-        ],
+            ],
+          ),
+        ),
       );
     }
+  }
+}
+
+class _VideoPreview extends StatelessWidget {
+  const _VideoPreview(
+      {required this.previewPath, required this.caption, required this.username});
+  final String? caption;
+  final String? username;
+  final String? previewPath;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      previewPath != null ? Image.file(File(previewPath!)) : const SizedBox(),
+      const Center(
+          child: Icon(
+        Icons.play_arrow_rounded,
+        size: 50,
+        color: Color.fromARGB(162, 255, 255, 255),
+      )),
+      const CustomGradientOverlay(),
+      caption == null && username == null
+          ? const SizedBox()
+          : _VideoCaption(
+              username: username!,
+              caption: caption!,
+            ),
+    ]);
   }
 }
 

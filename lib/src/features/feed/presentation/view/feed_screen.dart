@@ -4,6 +4,7 @@ import '../bloc/feed/feed_bloc.dart';
 import '../../../../shared/presentation/handlers/indicator.dart';
 
 import '../../../../shared/presentation/widgets/widgets.dart';
+import '../bloc/feed/feed_bloc.dart';
 
 class FeedScreen extends StatelessWidget{
   const FeedScreen({super.key});
@@ -21,11 +22,8 @@ class FeedScreen extends StatelessWidget{
             return PageView(
               scrollDirection: Axis.vertical,
               children: state.posts
-                  .map((post) => CustomVideoPlayer(
-                        assetPath: post.assetPath,
-                        username: post.user.username.value,
-                        caption: post.caption,
-                      ))
+                  .map((post) => VideoPost(assetPath: post.assetPath, isPlaying: true,username: post.user.username.value,
+                        caption: post.caption,) )
                   .toList(),
             );
           }

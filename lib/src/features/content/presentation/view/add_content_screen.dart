@@ -66,9 +66,7 @@ class AddContentScreen extends StatelessWidget {
             return Stack(
               fit: StackFit.expand,
               children: [
-                CustomVideoPlayer(
-                  assetPath: state.video!.path,
-                ),
+                VideoPost(assetPath: state.video!.path, isPlaying: true),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(

@@ -4,8 +4,32 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
 
-class ManageContentScreen extends StatelessWidget {
+class ManageContentScreen extends StatefulWidget {
   const ManageContentScreen({super.key});
+
+  @override
+  State<ManageContentScreen> createState() => _ManageContentScreenState();
+}
+
+class _ManageContentScreenState extends State<ManageContentScreen> {
+
+  int videoCount = 9;
+  int? playingIndex;
+  List<bool> whoIsPlayingNow = [];
+
+  @override
+  void initState() {
+    whoIsPlayingNow = List<bool>.generate(videoCount, (int index) => false);
+    super.initState();
+  }
+
+  _turnPlayOrPause(int nextIndex) {
+    setState(() {
+      playingIndex = nextIndex;
+      whoIsPlayingNow = List<bool>.generate(videoCount, (int index) => false);
+      whoIsPlayingNow[playingIndex!] = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +40,11 @@ class ManageContentScreen extends StatelessWidget {
         imagePath: 'assets/images/image_1.jpg');
     return Scaffold(
         appBar: AppBar(
+          leading: BackButton(
+          onPressed: () {
+            context.goNamed('feed');
+          },
+        ),
           centerTitle: true,
           title: Text(
             user.username.value,
@@ -28,6 +57,7 @@ class ManageContentScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 GridView.builder(
+                  itemCount: videoCount,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,11 +71,10 @@ class ManageContentScreen extends StatelessWidget {
                         caption: 'Test',
                         assetPath: 'assets/videos/video_1.mp4',
                       );
-                      return CustomVideoPlayer(
-                        assetPath: post.assetPath,
-                      );
+                      return GestureDetector(onTap: () =>  _turnPlayOrPause(index), child: VideoPost(assetPath: post.assetPath, isPlaying: playingIndex == null ? false : whoIsPlayingNow[index]));
+                      
                     }),
-                Center(child: Text('Second tab')),
+                const Center(child: Text('Second tab')),
               ],
             ),
             headerSliverBuilder: ((context, innerBoxIsScrolled) => [
