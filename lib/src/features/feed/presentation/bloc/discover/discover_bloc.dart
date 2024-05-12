@@ -21,8 +21,12 @@ class DiscoverBloc extends Bloc<DiscoverEvent, DiscoverState> {
     DiscoverGetUsers event,
     Emitter<DiscoverState> emit,
   ) async {
-    debugPrint('Start getting users with: _onDiscoverGetUsers');
-    List<User> users = await _getUsers(NoParams());
-    emit(DiscoverLoaded(users: users));
+    try {
+      debugPrint('Start getting users with: _onDiscoverGetUsers');
+      List<User> users = await _getUsers(NoParams());
+      emit(DiscoverLoaded(users: users));
+    } catch (e) {
+      emit(DiscoverFailure(errorText: e.toString()));
+    }
   }
 }

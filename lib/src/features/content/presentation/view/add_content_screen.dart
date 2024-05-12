@@ -6,9 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../../../shared/presentation/widgets/widgets.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../cubit/add_content_cubit.dart';
-import '../../../../shared/presentation/widgets/widgets.dart';
 
 class AddContentScreen extends StatelessWidget {
   const AddContentScreen({super.key});

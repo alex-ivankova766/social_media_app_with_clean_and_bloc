@@ -1,45 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../bloc/discover/discover_bloc.dart';
-import '../../../../shared/presentation/handlers/indicator.dart';
-import '../../../../shared/presentation/widgets/custom_gradient_overlay.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
+import '../bloc/discover/discover_bloc.dart';
 
-class DiscoverScreen extends StatelessWidget {
+class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
 
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
+  List<User> users = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Discover')),
       bottomNavigationBar: const CustomNavBar(),
-      body: BlocBuilder<DiscoverBloc, DiscoverState>(
-        builder: (context, state) {
-          if (state is DiscoverLoading) {
-            return ModalsHandler.loading;
-          }
-          if (state is DiscoverLoaded) {
-            return MasonryGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              itemCount: state.users.length,
-              itemBuilder: (context, index) {
-                User user = state.users[index];
-                return _DiscoverUserCard(
-                  user: user,
-                  index: index,
-                );
-              },
-            );
-          } else {
-            return const Center(child: Text('Something went wrong'));
-          }
-        },
-      ),
+      body: BlocListener<DiscoverBloc, DiscoverState>(
+          listener: (context, state) {
+            if (state is DiscoverLoading) {
+              context.pushNamed('loading_indicator');
+            }
+            if (state is DiscoverFailure) {
+              context.pushNamed('error',
+                  pathParameters: {"error_text": state.errorText});
+            }
+            if (state is DiscoverLoaded) {
+              setState(() {
+                users = state.users;
+              });
+              if (GoRouter.of(context).canPop()) {
+                GoRouter.of(context).pop();
+              }
+            }
+          },
+          child: MasonryGridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            itemCount: users.length,
+            itemBuilder: (context, index) {
+              User user = users[index];
+              return _DiscoverUserCard(
+                user: user,
+                index: index,
+              );
+            },
+          )),
     );
   }
 }

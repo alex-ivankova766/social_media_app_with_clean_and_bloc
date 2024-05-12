@@ -15,3 +15,8 @@ class FeedLoaded extends FeedState {
   @override
   List<Object> get props => [posts];
 }
+
+class FeedFailure extends FeedState {
+  final String errorText;
+  const FeedFailure({required this.errorText});
+}

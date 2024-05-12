@@ -15,3 +15,8 @@ class DiscoverLoaded extends DiscoverState {
   @override
   List<Object> get props => [users];
 }
+
+class DiscoverFailure extends DiscoverState {
+  final String errorText;
+  const DiscoverFailure({required this.errorText});
+}
