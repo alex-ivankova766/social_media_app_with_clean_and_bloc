@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../../../shared/domain/entities/entities.dart';
-import '../../domain/entities/logged_in_user.dart';
+import '../../domain/entities/entities.dart';
 
 enum AuthStatus {
   unknown,

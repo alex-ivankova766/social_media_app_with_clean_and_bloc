@@ -1,9 +1,6 @@
-import 'dart:io';
-
-import '../../../feed/domain/repositories/post_repository.dart';
-
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/domain/usecases/usecases.dart';
+import '../../../feed/domain/repositories/repositories.dart';
 
 class CreatePost implements UseCase<void, CreatePostParams> {
   CreatePost(this.postRepository);

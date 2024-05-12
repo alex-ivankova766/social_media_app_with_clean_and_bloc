@@ -1,8 +1,7 @@
-import '../../../../shared/data/models/user_model.dart';
-
 import '../../../../shared/data/datasources/post_data.dart';
 import '../../../../shared/data/datasources/user_data.dart';
 import '../../../../shared/data/models/post_model.dart';
+import '../../../../shared/data/models/user_model.dart';
 import '../../../../shared/domain/entities/entities.dart';
 
 abstract class MockFeedDatasource {

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../shared/domain/usecases/usecases.dart';
 import '../../../data/datasources/mock_auth_datasource.dart';
-import '../../../domain/entities/logged_in_user.dart';
+import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 
 part 'auth_event.dart';

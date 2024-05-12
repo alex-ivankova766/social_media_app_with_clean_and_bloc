@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'src/features/feed/data/datasources/local_feed_datasource.dart';
 
 import 'src/config/config.dart';
 import 'src/features/auth/data/datasources/mock_auth_datasource.dart';
@@ -14,6 +13,7 @@ import 'src/features/auth/domain/usecases/signup_user.dart';
 import 'src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'src/features/auth/presentation/cubits/login/login_cubit.dart';
 import 'src/features/auth/presentation/cubits/signup/signup_cubit.dart';
+import 'src/features/feed/data/datasources/local_feed_datasource.dart';
 import 'src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'src/features/feed/data/repositories/post_repository_impl.dart';
 import 'src/features/feed/data/repositories/user_repository_impl.dart';

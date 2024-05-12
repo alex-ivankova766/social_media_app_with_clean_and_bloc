@@ -1,7 +1,7 @@
-import '../datasources/mock_auth_datasource.dart';
-import '../../domain/entities/logged_in_user.dart';
-import '../../../../shared/domain/entities/user.dart';
+import '../../../../shared/domain/entities/entities.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../datasources/mock_auth_datasource.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   AuthRepositoryImpl(this.authDatasource);

@@ -1,6 +1,6 @@
 part of 'feed_bloc.dart';
 
-abstract class FeedState extends Equatable {
+sealed class FeedState extends Equatable {
   const FeedState();
 
   @override
@@ -14,4 +14,9 @@ class FeedLoaded extends FeedState {
   final List<Post> posts;
   @override
   List<Object> get props => [posts];
+}
+
+class FeedFailure extends FeedState {
+  final String errorText;
+  const FeedFailure({required this.errorText});
 }

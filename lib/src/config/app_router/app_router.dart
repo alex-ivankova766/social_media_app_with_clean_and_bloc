@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/presentation/blocs/auth/auth_bloc.dart';
-import '../features/auth/presentation/views/screens.dart';
-import '../features/content/domain/usecases/create_post.dart';
-import '../features/content/presentation/cubit/add_content_cubit.dart';
-import '../features/content/presentation/view/screens.dart';
-import '../features/feed/data/repositories/post_repository_impl.dart';
-import '../features/feed/data/repositories/user_repository_impl.dart';
-import '../features/feed/domain/usecases/get_posts.dart';
-import '../features/feed/domain/usecases/get_users.dart';
-import '../features/feed/presentation/bloc/discover/discover_bloc.dart';
-import '../features/feed/presentation/bloc/feed/feed_bloc.dart';
-import '../features/feed/presentation/view/screens.dart';
+import '../../features/auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../features/auth/presentation/views/screens.dart';
+import '../../features/content/domain/usecases/usecases.dart';
+import '../../features/content/presentation/cubit/add_content_cubit.dart';
+import '../../features/content/presentation/view/screens.dart';
+import '../../features/feed/data/repositories/repositories.dart';
+import '../../features/feed/domain/usecases/usecases.dart';
+import '../../features/feed/presentation/bloc/discover/discover_bloc.dart';
+import '../../features/feed/presentation/bloc/feed/feed_bloc.dart';
+import '../../features/feed/presentation/view/screens.dart';
+import '../../shared/presentation/handlers/handlers.dart';
+import 'dialog_page.dart';
 
 class AppRouter {
   AppRouter(this.authBloc);
@@ -24,6 +24,21 @@ class AppRouter {
 
   late final GoRouter router = GoRouter(
     routes: <GoRoute>[
+      GoRoute(
+        path: '/loading',
+        name: 'loading_indicator',
+        pageBuilder: (context, state) => DialogPage(
+          builder: (_) => const LoadingIndicator(),
+        ),
+      ),
+      GoRoute(
+        path: '/error/:error_text',
+        name: 'error',
+        pageBuilder: (context, state) => DialogPage(
+            builder: (_) => ErrorIndicator(
+                  errorText: state.pathParameters['error_text'] ?? 'Error',
+                )),
+      ),
       GoRoute(
         name: 'feed',
         path: '/',

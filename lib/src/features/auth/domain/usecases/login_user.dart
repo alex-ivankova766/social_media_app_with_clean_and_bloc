@@ -1,6 +1,6 @@
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/domain/usecases/usecases.dart';
-import '../entities/logged_in_user.dart';
+import '../entities/entities.dart';
 import '../repositories/auth_repository.dart';
 
 class LoginUser implements UseCase<void, LoginUserParams> {
