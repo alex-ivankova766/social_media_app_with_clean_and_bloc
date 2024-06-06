@@ -24,6 +24,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       debugPrint('Start getting posts with: _onFeedGetPosts');
       emit(FeedLoading());
+      await Future.delayed(const Duration(seconds: 2));
       List<Post> posts = await _getPosts(NoParams());
       emit(FeedLoaded(posts: posts));
     } catch (e) {
