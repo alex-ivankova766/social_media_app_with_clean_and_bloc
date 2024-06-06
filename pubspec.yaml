@@ -26,6 +26,7 @@ dependencies:
   logger: ^2.2.0
   video_thumbnail: ^0.5.3
   flutter_isolate: ^2.0.5-pre
+  go_router_builder: ^2.7.0
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1

@@ -74,7 +74,8 @@ class MyApp extends StatelessWidget {
             return MaterialApp.router(
               title: 'Social media application',
               theme: CustomTheme().theme(),
-              routerConfig: AppRouter(context.read<AuthBloc>()).router,
+              routerConfig:
+                  AppRouter(authBloc: context.read<AuthBloc>()).router,
             );
           },
         ),

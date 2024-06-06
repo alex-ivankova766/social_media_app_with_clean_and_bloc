@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/config/app_router/routes/modals/modals.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/config/app_router/routes/without_nav_bar/index.dart';
 
 import '../../../../shared/presentation/widgets/widgets.dart';
 import '../cubits/login/login_cubit.dart';
-import '../widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -17,8 +18,7 @@ class LoginScreen extends StatelessWidget {
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status.isSubmissionFailure) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(authSnackBar(state.errorText ?? 'Auth failure'));
+            const ErrorDialogRoute('Auth failure').push(context);
           }
         },
         child: const SafeArea(
@@ -130,8 +130,9 @@ class _LoginButton extends StatelessWidget {
                 onPressed: () {
                   state.status == FormzStatus.valid
                       ? context.read<LoginCubit>().logInWithCredentials()
-                      : ScaffoldMessenger.of(context).showSnackBar(authSnackBar(
-                          'Check your username and password: ${state.status}'));
+                      : ErrorDialogRoute(
+                              'Check your username and password: ${state.status}')
+                          .push(context);
                 },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

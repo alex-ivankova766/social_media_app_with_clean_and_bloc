@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/config/app_router/routes/without_nav_bar/index.dart';
 
+import '../../../../config/app_router/routes/index.dart';
 import '../../../../shared/domain/entities/entities.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
 import '../bloc/discover/discover_bloc.dart';
@@ -16,27 +17,25 @@ class DiscoverScreen extends StatefulWidget {
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
   List<User> users = [];
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Discover')),
-      bottomNavigationBar: const CustomNavBar(),
       body: BlocListener<DiscoverBloc, DiscoverState>(
           listener: (context, state) {
             if (state is DiscoverLoading) {
-              context.pushNamed('loading_indicator');
+              _showLoading(context);
             }
             if (state is DiscoverFailure) {
-              context.pushNamed('error',
-                  pathParameters: {"error_text": state.errorText});
+              _tryHideLoading(context);
+              ErrorDialogRoute(state.errorText).pushReplacement(context);
             }
             if (state is DiscoverLoaded) {
+              _tryHideLoading(context);
               setState(() {
                 users = state.users;
               });
-              if (GoRouter.of(context).canPop()) {
-                GoRouter.of(context).pop();
-              }
             }
           },
           child: MasonryGridView.count(
@@ -53,6 +52,20 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             },
           )),
     );
+  }
+
+  void _tryHideLoading(BuildContext context) {
+    if (isLoading) {
+      LoadingDialog.hide(context);
+      isLoading = false;
+    }
+  }
+
+  void _showLoading(BuildContext context) {
+    if (!isLoading) {
+      LoadingDialog.show(context);
+      isLoading = true;
+    }
   }
 }
 

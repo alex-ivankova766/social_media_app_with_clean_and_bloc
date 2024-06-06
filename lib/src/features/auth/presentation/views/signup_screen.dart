@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../config/app_router/routes/modals/modals.dart';
+import '../../../../config/app_router/routes/without_nav_bar/index.dart';
 import '../../../../shared/presentation/widgets/widgets.dart';
 import '../cubits/signup/signup_cubit.dart';
-import '../widgets/login_snack_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -130,8 +131,9 @@ class _SignupButton extends StatelessWidget {
                     context.read<SignupCubit>().signupWithCredentials();
                     context.pop();
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(authSnackBar(
-                        'Check your username, email and password: ${state.status}'));
+                    ErrorDialogRoute(
+                            'Check your username, email and password: ${state.status}')
+                        .push(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
