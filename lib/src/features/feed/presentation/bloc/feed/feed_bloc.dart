@@ -14,7 +14,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   FeedBloc({
     required getPosts,
   })  : _getPosts = getPosts,
-        super(FeedLoading()) {
+        super(const FeedState()) {
     on<FeedGetPosts>(_onFeedGetPosts);
   }
 
@@ -22,13 +22,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     FeedGetPosts event,
     Emitter<FeedState> emit,
   ) async {
-    try {
-      debugPrint('Start getting posts with: _onFeedGetPosts');
-      emit(FeedLoading());
-      List<Post> posts = await _getPosts(NoParams());
-      emit(FeedLoaded(posts: posts));
-    } catch (e) {
-      emit(FeedFailure(errorText: e.toString()));
-    }
+    debugPrint('Start getting posts with: _onFeedGetPosts');
+    List<Post> posts = await _getPosts(NoParams());
+    emit(FeedState(posts: posts));
   }
 }

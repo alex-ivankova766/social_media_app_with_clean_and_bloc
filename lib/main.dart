@@ -23,6 +23,8 @@ import 'src/features/feed/data/datasources/local_feed_datasource.dart';
 import 'src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'src/features/feed/data/repositories/post_repository_impl.dart';
 import 'src/features/feed/data/repositories/user_repository_impl.dart';
+import 'src/features/feed/domain/usecases/get_posts.dart';
+import 'src/features/feed/presentation/bloc/feed/feed_bloc.dart';
 import 'src/shared/data/models/post_model.dart';
 import 'src/shared/data/models/user_model.dart';
 
@@ -85,6 +87,14 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (ctx) => SignupCubit(
                 signupUser: SignupUser(ctx.read<AuthRepositoryImpl>())),
+          ),
+          BlocProvider(
+            create: (context) => FeedBloc(
+              getPosts: GetPosts(
+                context.read<PostRepositoryImpl>(),
+                context.read<SharedStatesRepositoryImpl>(),
+              ),
+            ),
           ),
         ],
         child: Builder(builder: (context) {

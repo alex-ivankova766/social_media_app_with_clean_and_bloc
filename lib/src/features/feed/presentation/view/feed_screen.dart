@@ -14,17 +14,15 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   List<Post> posts = [];
-  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<FeedBloc, FeedState>(
         listener: (context, state) {
-          if (state is FeedLoaded) {
-            setState(() {
-              posts = state.posts;
-            });
-          }
+          setState(() {
+            posts = state.posts;
+          });
         },
         child: PageView(
             scrollDirection: Axis.vertical,

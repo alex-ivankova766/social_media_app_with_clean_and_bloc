@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../features/auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../features/feed/presentation/bloc/feed/feed_bloc.dart';
 import '../../features/shared_states/presentation/bloc/shared_states_bloc.dart';
 import 'routes/index.dart';
 import 'routes/with_nav_bar/index.dart' as with_nav_bar;
@@ -32,8 +32,12 @@ class AppRouter {
       ...with_nav_bar.$appRoutes,
       ...without_nav_bar.$appRoutes,
     ],
+
     redirect: (context, state) {
       context.read<SharedStatesBloc>().add(GoToInitialStatusEvent());
+      if (state.fullPath == FeedRoute().location) {
+        context.read<FeedBloc>().add(FeedGetPosts());
+      }
       return null;
     },
     // redirect: (BuildContext context, GoRouterState state) {
