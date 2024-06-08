@@ -36,7 +36,9 @@ class SharedStatesBloc extends Bloc<SharedStatesEvent, SharedState> {
     GoToInitialStatusEvent event,
     Emitter<SharedState> emit,
   ) {
-    _goToInitialStatus(NoParams());
+    if (state is SharedStatesLoading || state is SharedStatesFailure) {
+      _goToInitialStatus(NoParams());
+    }
   }
 
   Future<void> _onStateGetStatus(
