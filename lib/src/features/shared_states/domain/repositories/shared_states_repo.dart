@@ -5,6 +5,7 @@ abstract interface class SharedStatesRepository {
   Future<void> setLoading();
   Future<void> setLoaded();
   Future<void> setFailure(String errorText);
+  StateStatus get currentStateStatus;
   Stream<StateStatus> get status;
   String? get errorText;
 }

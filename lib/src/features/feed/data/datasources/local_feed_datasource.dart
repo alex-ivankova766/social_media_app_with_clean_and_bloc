@@ -27,7 +27,7 @@ class LocalFeedDatasourceImpl extends LocalFeedDatasource {
 
   @override
   Future<List<Post>> getPosts() async {
-    await Future.delayed(const Duration(seconds: 5), () {});
+    await Future.delayed(const Duration(seconds: 2), () {});
     throw Error();
     // Box<PostModel> box = await _openBox() as Box<PostModel>;
     // return box.values.toList().map((post) => post.toEntity()).toList();

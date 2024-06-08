@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/presentation/bloc/shared_states_bloc.dart';
 
-import '../../features/auth/data/datasources/mock_auth_datasource.dart';
 import '../../features/auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../features/shared_states/presentation/bloc/shared_states_bloc.dart';
 import 'routes/index.dart';
 import 'routes/with_nav_bar/index.dart' as with_nav_bar;
 import 'routes/without_nav_bar/index.dart' as without_nav_bar;

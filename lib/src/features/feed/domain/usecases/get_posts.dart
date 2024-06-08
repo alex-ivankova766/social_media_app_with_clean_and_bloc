@@ -18,7 +18,7 @@ class GetPosts implements UseCase<List<Post>, NoParams> {
       statesRepository.setLoaded();
       return posts;
     } catch (e) {
-      if (await statesRepository.status.last != StateStatus.initial) {
+      if (statesRepository.currentStateStatus != StateStatus.initial) {
         statesRepository.setFailure(e.toString());
         rethrow;
       } else {
