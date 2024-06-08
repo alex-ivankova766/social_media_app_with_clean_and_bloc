@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/data/repositories/shared_states_repo_impl.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/domain/usecases/get_error_text.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/domain/usecases/get_state_status.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/domain/usecases/go_to_initial_shared_state.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/features/shared_states/presentation/bloc/shared_states_bloc.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/shared/presentation/handlers/handlers.dart';
 
 import 'src/config/config.dart';
 import 'src/features/auth/data/datasources/mock_auth_datasource.dart';
@@ -50,6 +56,9 @@ class MyApp extends StatelessWidget {
             LocalFeedDatasourceImpl(),
           ),
         ),
+        RepositoryProvider(
+          create: (ctx) => SharedStatesRepositoryImpl(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -61,6 +70,15 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider(
+            create: (ctx) => SharedStatesBloc(
+                getStateStatus:
+                    GetStateStatus(ctx.read<SharedStatesRepositoryImpl>()),
+                getErrorText:
+                    GetErrorText(ctx.read<SharedStatesRepositoryImpl>()),
+                goToInitialStatus: GoToInitialSharedStatus(
+                    ctx.read<SharedStatesRepositoryImpl>())),
+          ),
+          BlocProvider(
             create: (ctx) => LoginCubit(
                 loginUser: LoginUser(ctx.read<AuthRepositoryImpl>())),
           ),
@@ -69,16 +87,33 @@ class MyApp extends StatelessWidget {
                 signupUser: SignupUser(ctx.read<AuthRepositoryImpl>())),
           ),
         ],
-        child: Builder(
-          builder: (context) {
-            return MaterialApp.router(
-              title: 'Social media application',
-              theme: CustomTheme().theme(),
-              routerConfig:
-                  AppRouter(authBloc: context.read<AuthBloc>()).router,
-            );
-          },
-        ),
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            title: 'Social media application',
+            theme: CustomTheme().theme(),
+            routerConfig: AppRouter(authBloc: context.read<AuthBloc>()).router,
+            builder: (context, child) {
+              return Stack(
+                children: [
+                  child!,
+                  BlocBuilder<SharedStatesBloc, SharedState>(
+                    builder: (context, state) {
+                      if (state is SharedStatesLoading) {
+                        return const LoadingIndicator();
+                      } else if (state is SharedStatesFailure) {
+                        return ErrorIndicator(
+                          errorText: state.errorText,
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }),
       ),
     );
   }
