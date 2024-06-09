@@ -35,9 +35,6 @@ class AppRouter {
 
     redirect: (context, state) {
       context.read<SharedStatesBloc>().add(GoToInitialStatusEvent());
-      if (state.fullPath == FeedRoute().location) {
-        context.read<FeedBloc>().add(FeedGetPosts());
-      }
       return null;
     },
     // redirect: (BuildContext context, GoRouterState state) {
