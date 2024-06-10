@@ -14,14 +14,14 @@ abstract class MockFeedDatasource {
 class MockFeedDatasourceImpl implements MockFeedDatasource {
   @override
   Future<List<Post>> getPosts() async {
-    await Future.delayed(const Duration(milliseconds: 300), () {});
-
-    return posts.map((post) {
-      Map<String, dynamic> user = users.where((user) {
-        return user['id'] == post['userId'];
-      }).first;
-      return PostModel.fromJson(post, user).toEntity();
-    }).toList();
+    await Future.delayed(const Duration(seconds: 2), () {});
+    throw Error();
+    // return posts.map((post) {
+    //   Map<String, dynamic> user = users.where((user) {
+    //     return user['id'] == post['userId'];
+    //   }).first;
+    //   return PostModel.fromJson(post, user).toEntity();
+    // }).toList();
   }
 
   @override

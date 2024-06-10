@@ -11,9 +11,10 @@ part 'feed_state.dart';
 
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final GetPosts _getPosts;
-  FeedBloc({required getPosts})
-      : _getPosts = getPosts,
-        super(FeedLoading()) {
+  FeedBloc({
+    required getPosts,
+  })  : _getPosts = getPosts,
+        super(const FeedState()) {
     on<FeedGetPosts>(_onFeedGetPosts);
   }
 
@@ -21,14 +22,8 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     FeedGetPosts event,
     Emitter<FeedState> emit,
   ) async {
-    try {
-      debugPrint('Start getting posts with: _onFeedGetPosts');
-      emit(FeedLoading());
-      await Future.delayed(const Duration(seconds: 2));
-      List<Post> posts = await _getPosts(NoParams());
-      emit(FeedLoaded(posts: posts));
-    } catch (e) {
-      emit(FeedFailure(errorText: e.toString()));
-    }
+    debugPrint('Start getting posts with: _onFeedGetPosts');
+    List<Post> posts = await _getPosts(NoParams());
+    emit(FeedState(posts: posts));
   }
 }

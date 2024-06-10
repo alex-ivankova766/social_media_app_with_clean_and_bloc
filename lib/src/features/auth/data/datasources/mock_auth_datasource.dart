@@ -29,7 +29,6 @@ class MockAuthDatasourceImpl extends MockAuthDatasource {
   static const userCacheKey = '__user_cache_key';
   @override
   Stream<AuthStatus> get status async* {
-    await Future<void>.delayed(const Duration(seconds: 1));
     yield AuthStatus.unauthenticated;
     yield* _authStatusStreamController.stream;
   }

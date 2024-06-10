@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media_app_with_clean_architecture_and_the_bloc_pattern/src/config/app_router/routes/index.dart';
+
+import '../../../features/feed/presentation/bloc/feed/feed_bloc.dart';
 
 /// Данные кнопок навигационной панели
 const Map<String, IconData> navItems = {
@@ -7,6 +11,11 @@ const Map<String, IconData> navItems = {
   'Обзор': Icons.search,
   'Контент': Icons.add_circle,
   'Люди': Icons.person,
+};
+
+final Map<String, Function(BuildContext)> screensCallbacks = {
+  FeedRoute().location: (BuildContext context) =>
+      context.read<FeedBloc>().add(FeedGetPosts()),
 };
 
 class BottomNavigationWrapper extends StatefulWidget {
@@ -24,6 +33,24 @@ class BottomNavigationWrapper extends StatefulWidget {
 }
 
 class _BottomNavigationWrapperState extends State<BottomNavigationWrapper> {
+  late GoRouter goRouter;
+
+  @override
+  void initState() {
+    super.initState();
+    goRouter = GoRouter.of(context);
+    goRouter.routerDelegate.addListener(_onListen);
+  }
+
+  _onListen() {
+    String currentPath = goRouter.routerDelegate.currentConfiguration.fullPath;
+    for (var entry in screensCallbacks.entries) {
+      if (currentPath == entry.key) {
+        entry.value(context);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
